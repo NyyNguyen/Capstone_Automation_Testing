@@ -32,15 +32,12 @@ export class LoginPage extends CommonPage {
     await this.page.goto("/");
     await this.page.waitForLoadState("domcontentloaded");
     
-    // Open user menu dropdown on top right header
     await this.btnUserMenu.waitFor({ state: "visible", timeout: TimeOutConstants.TIME_OUT_DEFAULT });
     await this.click(this.btnUserMenu);
     
-    // Click Đăng nhập option inside dropdown to open popup modal
     await this.btnOpenLoginModal.first().waitFor({ state: "visible", timeout: TimeOutConstants.TIME_OUT_DEFAULT });
     await this.click(this.btnOpenLoginModal.first());
 
-    // Wait until modal email input is visible
     await this.txtEmail.waitFor({ state: "visible", timeout: TimeOutConstants.TIME_OUT_DEFAULT });
   }
 
@@ -88,7 +85,6 @@ export class LoginPage extends CommonPage {
     }
   }
 
-  // Getters for element visibility assertions
   get EmailInput(): Locator {
     return this.txtEmail;
   }
