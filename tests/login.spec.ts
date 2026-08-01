@@ -1,9 +1,8 @@
-import { test, expect } from "../fixtures/page-fixtures.ts";
+import { test, expect } from "../fixtures/page-fixtures";
 import { TimeOutConstants } from "../constants/TimeOutConstants";
 
 test.describe("Suite Kiểm thử Chức năng Popup Đăng Nhập ở Trang Chủ - demo5.cybersoft.edu.vn", () => {
   test.beforeEach(async ({ loginPage }) => {
-    // Mở trang chủ -> Bấm nút Menu người dùng trên Header -> Bấm 'Đăng Nhập' để mở Popup Modal
     await loginPage.gotoLoginPage();
   });
 
@@ -63,13 +62,10 @@ test.describe("Suite Kiểm thử Chức năng Popup Đăng Nhập ở Trang Ch�
   });
 
   test("TC08 - Xác minh Đăng nhập với trường [Mật khẩu] dưới 6 ký tự", async ({ loginPage }) => {
-    // Thực hiện đăng nhập với email và mật khẩu dưới 6 ký tự (1233)
     await loginPage.enterEmail("testt32244@gmail.com");
     await loginPage.enterPassword("1233");
     await loginPage.clickLoginButton();
 
-    // Mong đợi (Expected): Hệ thống hiển thị lỗi validation yêu cầu mật khẩu phải từ 6 ký tự trở lên.
-    // Ghi chú (Bug detection): Hiện tại hệ thống web demo cho phép đăng nhập thành công với '1233' (Lỗi hệ thống).
     await expect(loginPage.ErrorMessageLabel.first()).toBeVisible();
     await expect(loginPage.ErrorMessageLabel.first()).toHaveText("Mật khẩu từ 6 đến 32 ký tự");
   });
@@ -92,7 +88,6 @@ test.describe("Suite Kiểm thử Chức năng Popup Đăng Nhập ở Trang Ch�
       await loginPage.closeLoginModal();
       await expect(loginPage.EmailInput).not.toBeVisible();
     } else {
-      // Alternate check: press Escape to close modal
       await loginPage.EmailInput.press("Escape");
       await expect(loginPage.EmailInput).not.toBeVisible();
     }

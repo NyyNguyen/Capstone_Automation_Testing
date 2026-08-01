@@ -1,7 +1,11 @@
 import { Locator, Page } from "@playwright/test";
 import { CommonPage } from "./CommonPage";
+import { TimeOutConstants } from "../constants/TimeOutConstants";
 
 export class HomePage extends CommonPage {
+  readonly locationList: Locator;
+  readonly searchInput: Locator;
+
   readonly locationLabel: Locator;
   readonly destinationLabel: Locator;
   readonly locationField: Locator;
@@ -36,7 +40,7 @@ export class HomePage extends CommonPage {
   readonly plusButton: Locator;
   readonly numberOfGuests: Locator;
 
-  readonly iconSearch: Locator; 
+  readonly iconSearch: Locator;
   readonly buttonLoaiNoiO: Locator;
   readonly buttonGia: Locator;
   readonly buttonDatNgay: Locator;
@@ -58,9 +62,12 @@ export class HomePage extends CommonPage {
   readonly iconLeft: Locator;
   readonly iconRight: Locator;
 
-
   constructor(page: Page) {
     super(page);
+
+    this.locationList = page.locator("text=/Hồ Chí Minh/i");
+    this.searchInput = page.getByPlaceholder(/bạn muốn đến đâu/i);
+
     this.locationLabel = page.getByText("Địa điểm");
     this.destinationLabel = page.getByText("Bạn sắp đi đâu?");
     this.locationField = page.getByText("Địa điểm");
@@ -115,31 +122,68 @@ export class HomePage extends CommonPage {
     this.minusButton = page.getByRole("button", { name: "-" });
     this.plusButton = page.getByRole("button", { name: "+" });
     this.numberOfGuests = page.locator(
-      '//div[contains(@class,"flex")]/button[1]/following-sibling::div[1]',
+      '//div[contains(@class,"flex")]/button[1]/following-sibling::div[1]'
     );
-    
-    this.iconSearch = page.locator('.bg-main.ml-5');
-    this.buttonLoaiNoiO = page.getByRole('button', { name: 'Loại nơi ở' });
-    this.buttonGia = page.getByRole('button', { name: 'Giá' });
-    this.buttonDatNgay = page.getByRole('button', { name: 'Đặt ngay' });
-    this.buttonPhongVaPhongNgu = page.getByRole('button', { name: 'Phòng và phòng ngủ' });
-    this.buttonBoLocKhac = page.getByRole('button', { name: 'Bộ lọc khác' });
 
-    this.HoChiMinh = page.getByRole('link', { name: 'Hồ Chí Minh 15 phút lái xe' });
-    this.CanTho = page.getByRole('link', { name: 'Cần Thơ 3 giờ lái xe' });
-    this.NhaTrang = page.getByRole('link', { name: 'Nha Trang 6.5 giờ lái xe' });
-    this.HaNoi = page.getByRole('link', { name: 'Hà Nội 15 phút lái xe' });
-    this.PhuQuoc = page.getByRole('link', { name: 'Phú Quốc 7.5 giờ lái xe' });
-    this.DaNang = page.getByRole('link', { name: 'Đà Nẵng 45 phút lái xe' });
-    this.DaLat = page.getByRole('link', { name: 'Đà Lạt 30 phút lái xe' });
-    this.PhanThiet = page.getByRole('link', { name: 'Phan Thiết 5 giờ lái xe' });
+    this.iconSearch = page.locator(".bg-main.ml-5");
+    this.buttonLoaiNoiO = page.getByRole("button", { name: "Loại nơi ở" });
+    this.buttonGia = page.getByRole("button", { name: "Giá" });
+    this.buttonDatNgay = page.getByRole("button", { name: "Đặt ngay" });
+    this.buttonPhongVaPhongNgu = page.getByRole("button", {
+      name: "Phòng và phòng ngủ",
+    });
+    this.buttonBoLocKhac = page.getByRole("button", { name: "Bộ lọc khác" });
 
-    this.fieldDate = page.locator('(//div[contains(@class,"cursor-pointer")])[2]');
-    this.fieldDateText = page.locator("//div[contains(@class,'col-span-4') and contains(@class,'cursor-pointer')]//p")
-    this.fieldDatePopup = page.locator('div').filter({ hasText: 'TodayYesterdayThis WeekLast' }).nth(5);
-    this.iconLeft = page.getByRole('button').filter({ hasText: /^$/ }).nth(1);
-    this.iconRight = page.getByRole('button').filter({ hasText: /^$/ }).nth(2);
-    
+    this.HoChiMinh = page.getByRole("link", {
+      name: "Hồ Chí Minh 15 phút lái xe",
+    });
+    this.CanTho = page.getByRole("link", { name: "Cần Thơ 3 giờ lái xe" });
+    this.NhaTrang = page.getByRole("link", { name: "Nha Trang 6.5 giờ lái xe" });
+    this.HaNoi = page.getByRole("link", { name: "Hà Nội 15 phút lái xe" });
+    this.PhuQuoc = page.getByRole("link", { name: "Phú Quốc 7.5 giờ lái xe" });
+    this.DaNang = page.getByRole("link", { name: "Đà Nẵng 45 phút lái xe" });
+    this.DaLat = page.getByRole("link", { name: "Đà Lạt 30 phút lái xe" });
+    this.PhanThiet = page.getByRole("link", {
+      name: "Phan Thiết 5 giờ lái xe",
+    });
+
+    this.fieldDate = page.locator(
+      '(//div[contains(@class,"cursor-pointer")])[2]'
+    );
+    this.fieldDateText = page.locator(
+      "//div[contains(@class,'col-span-4') and contains(@class,'cursor-pointer')]//p"
+    );
+    this.fieldDatePopup = page
+      .locator("div")
+      .filter({ hasText: "TodayYesterdayThis WeekLast" })
+      .nth(5);
+    this.iconLeft = page.getByRole("button").filter({ hasText: /^$/ }).nth(1);
+    this.iconRight = page.getByRole("button").filter({ hasText: /^$/ }).nth(2);
+  }
+
+  async gotoHomePage(timeOut: number = TimeOutConstants.TIME_OUT_DEFAULT) {
+    await this.page.goto("/", {
+      timeout: timeOut,
+      waitUntil: "domcontentloaded",
+    });
+  }
+
+  async selectLocation(
+    locationName: string = "Hồ Chí Minh",
+    timeOut: number = TimeOutConstants.TIME_OUT_DEFAULT
+  ) {
+    const locationLocator = this.page.locator(`text="${locationName}"`).first();
+    await locationLocator.scrollIntoViewIfNeeded();
+    await this.click(locationLocator, timeOut);
+  }
+
+  async selectRoomByTitle(
+    roomTitle: string = "NewApt D1 - Cozy studio",
+    timeOut: number = TimeOutConstants.TIME_OUT_DEFAULT
+  ) {
+    const roomLocator = this.page.locator(`text="${roomTitle}"`).first();
+    await roomLocator.scrollIntoViewIfNeeded();
+    await this.click(roomLocator, timeOut);
   }
 
   async clickLocationField() {
@@ -198,52 +242,53 @@ export class HomePage extends CommonPage {
     await this.minusButton.click();
   }
 
-  async clickHoChiMinh(){
+  async clickHoChiMinh() {
     await this.HoChiMinh.click();
   }
 
-  async clickCanTho(){
+  async clickCanTho() {
     await this.CanTho.click();
   }
 
-  async clickNhaTrang(){
+  async clickNhaTrang() {
     await this.NhaTrang.click();
   }
 
-  async clickHaNoi(){
+  async clickHaNoi() {
     await this.HaNoi.click();
   }
 
-  async clickPhuQuoc(){
+  async clickPhuQuoc() {
     await this.PhuQuoc.click();
   }
 
-  async clickDaNang(){
+  async clickDaNang() {
     await this.DaNang.click();
   }
 
-  async clickDaLat(){
+  async clickDaLat() {
     await this.DaLat.click();
   }
 
-  async clickPhanThiet(){
+  async clickPhanThiet() {
     await this.PhanThiet.click();
   }
 
-  async clickFieldDate(){
+  async clickFieldDate() {
     await this.fieldDate.click();
   }
 
-  async clickIconLeft(){
+  async clickIconLeft() {
     await this.iconLeft.click();
   }
 
-  async clickIconRight(){
+  async clickIconRight() {
     await this.iconRight.click();
   }
 
-  async selectDay(day:string){
-    await this.page.locator(`(//div[@class='rdrMonth'])[1]//span[text()='${day}']`)
+  async selectDay(day: string) {
+    await this.page
+      .locator(`(//div[@class='rdrMonth'])[1]//span[text()='${day}']`)
       .click();
   }
 }
