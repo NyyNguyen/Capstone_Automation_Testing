@@ -34,6 +34,7 @@ export default defineConfig({
     baseURL: "https://demo5.cybersoft.edu.vn/",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
+    screenshot: "only-on-failure",
     actionTimeout: 10000, //mặc đinh là 0, nếu action nào chạy quá 10s sẽ bị fail
   },
 
