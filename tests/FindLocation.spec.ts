@@ -1,4 +1,4 @@
-import { expect, test } from "../fixtures/page-fixture";
+import { expect, test } from "../fixtures/page-fixtures";
 import { getBookingDate } from "../constants/Date";
 
 test("TC_01: Xác minh hiển thị label [Địa điểm]", async ({
