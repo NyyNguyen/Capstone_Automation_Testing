@@ -1,4 +1,4 @@
-import { expect, test } from "../../fixtures/page-fixture";
+import { expect, test } from "../../fixtures/page-fixtures";
 import { RegisterPage } from "../../pages/RegisterPage";
 import { registerData } from "../../test-data/register.data";
 
