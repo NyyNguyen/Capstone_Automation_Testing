@@ -1,32 +1,33 @@
 import { test as base, expect } from "@playwright/test";
 import { HomePage } from "../pages/HomePage";
-import { RegisterPage } from "../pages/RegisterPage";
 import { LoginPage } from "../pages/LoginPage";
-import { RoomDetailPage } from "../pages/RoomDetailPage";
+import { RegisterPage } from "../pages/RegisterPage";
 
 type MyFixture = {
   homePage: HomePage;
-  registerPage: RegisterPage;
   loginPage: LoginPage;
-  roomDetailPage: RoomDetailPage;
+  registerPage: RegisterPage;
 };
 
 export const test = base.extend<MyFixture>({
   homePage: async ({ page }, use) => {
+    // set up homePage
     const homePage = new HomePage(page);
+
+    // khai báo sử dụng homePage trong test
     await use(homePage);
   },
-  registerPage: async ({ page }, use) => {
-    const registerPage = new RegisterPage(page);
-    await use(registerPage);
-  },
+
   loginPage: async ({ page }, use) => {
+    // set login page
     const loginPage = new LoginPage(page);
     await use(loginPage);
   },
-  roomDetailPage: async ({ page }, use) => {
-    const roomDetailPage = new RoomDetailPage(page);
-    await use(roomDetailPage);
+
+  registerPage: async ({ page }, use) => {
+    // set register page
+    const registerPage = new RegisterPage(page);
+    await use(registerPage);
   },
 });
 
