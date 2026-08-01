@@ -1,4 +1,4 @@
-import { expect, test } from "../../fixtures/page-fixture";
+import { expect, test } from "../../fixtures/page-fixtures";
 
 // callback function: hàm được truyền vào trong hàm khác như 1 tham số
 // test("verify register function", async ({ page }) => {
