@@ -6,7 +6,7 @@ test.describe("Suite Kiểm thử Chức năng Bình luận & Đánh giá (Room 
     await roomDetailPage.navigateToRoomDetail("Hồ Chí Minh", "NewApt D1 - Cozy studio");
   });
 
-  test("TC_CMT_01 - Kiểm tra hiển thị danh sách Bình luận & Đánh giá hiện có trên trang", async ({ page }) => {
+  test("TC01 - Kiểm tra hiển thị danh sách Bình luận & Đánh giá hiện có trên trang", async ({ page }) => {
     const reviewHeader = page.locator("h2, h3, h4, div").filter({ hasText: /Bình luận|Đánh giá|Reviews/i }).first();
     if (await reviewHeader.isVisible().catch(() => false)) {
       await expect(reviewHeader).toBeVisible();
@@ -15,7 +15,7 @@ test.describe("Suite Kiểm thử Chức năng Bình luận & Đánh giá (Room 
     await expect(pageBody).toBeVisible();
   });
 
-  test("TC_CMT_02 - Kiểm tra hiển thị Form nhập bình luận hoặc yêu cầu đăng nhập để bình luận", async ({ page }) => {
+  test("TC02 - Kiểm tra hiển thị Form nhập bình luận hoặc yêu cầu đăng nhập để bình luận", async ({ page }) => {
     const commentInput = page.locator("textarea, input[placeholder*='bình luận'], input[name*='content'], input[name*='noiDung']").first();
     const loginToCommentBtn = page.getByText(/đăng nhập|login/i).first();
 
@@ -25,7 +25,7 @@ test.describe("Suite Kiểm thử Chức năng Bình luận & Đánh giá (Room 
     expect(isInputVisible || isLoginBtnVisible || true).toBeTruthy();
   });
 
-  test("TC_CMT_03 - Xác minh phản ứng hệ thống khi người dùng CHƯA ĐĂNG NHẬP gửi bình luận", async ({ page }) => {
+  test("TC03 - Xác minh phản ứng hệ thống khi người dùng CHƯA ĐĂNG NHẬP gửi bình luận", async ({ page }) => {
     const commentInput = page.locator("textarea, input[placeholder*='bình luận'], input[name*='content']").first();
     const submitBtn = page.getByRole("button", { name: /Gửi|Đăng|Bình luận/i }).first();
 
@@ -40,7 +40,7 @@ test.describe("Suite Kiểm thử Chức năng Bình luận & Đánh giá (Room 
     }
   });
 
-  test("TC_CMT_04 - Xác minh gửi bình luận khi để TRỐNG nội dung (Empty comment validation)", async ({ page }) => {
+  test("TC04 - Xác minh gửi bình luận khi để TRỐNG nội dung (Empty comment validation)", async ({ page }) => {
     const commentInput = page.locator("textarea, input[placeholder*='bình luận'], input[name*='content']").first();
     const submitBtn = page.getByRole("button", { name: /Gửi|Đăng|Bình luận/i }).first();
 
@@ -55,7 +55,7 @@ test.describe("Suite Kiểm thử Chức năng Bình luận & Đánh giá (Room 
     }
   });
 
-  test("TC_CMT_05 - Xác minh gửi bình luận chỉ chứa Khoảng trắng (Whitespace validation)", async ({ page }) => {
+  test("TC05 - Xác minh gửi bình luận chỉ chứa Khoảng trắng (Whitespace validation)", async ({ page }) => {
     const commentInput = page.locator("textarea, input[placeholder*='bình luận'], input[name*='content']").first();
     const submitBtn = page.getByRole("button", { name: /Gửi|Đăng|Bình luận/i }).first();
 
@@ -70,7 +70,7 @@ test.describe("Suite Kiểm thử Chức năng Bình luận & Đánh giá (Room 
     }
   });
 
-  test("TC_CMT_06 - Xác minh gửi bình luận hợp lệ với văn bản chuẩn", async ({ page }) => {
+  test("TC06 - Xác minh gửi bình luận hợp lệ với văn bản chuẩn", async ({ page }) => {
     const commentInput = page.locator("textarea, input[placeholder*='bình luận'], input[name*='content']").first();
     const submitBtn = page.getByRole("button", { name: /Gửi|Đăng|Bình luận/i }).first();
 
@@ -85,7 +85,7 @@ test.describe("Suite Kiểm thử Chức năng Bình luận & Đánh giá (Room 
     }
   });
 
-  test("TC_CMT_07 - Xác minh gửi bình luận chứa Ký tự đặc biệt và Emoji", async ({ page }) => {
+  test("TC07 - Xác minh gửi bình luận chứa Ký tự đặc biệt và Emoji", async ({ page }) => {
     const commentInput = page.locator("textarea, input[placeholder*='bình luận'], input[name*='content']").first();
     const submitBtn = page.getByRole("button", { name: /Gửi|Đăng|Bình luận/i }).first();
 
@@ -100,7 +100,7 @@ test.describe("Suite Kiểm thử Chức năng Bình luận & Đánh giá (Room 
     }
   });
 
-  test("TC_CMT_08 - Kiểm tra an toàn bảo mật XSS Injection khi nhập mã Script vào ô bình luận", async ({ page }) => {
+  test("TC08 - Kiểm tra an toàn bảo mật XSS Injection khi nhập mã Script vào ô bình luận", async ({ page }) => {
     const commentInput = page.locator("textarea, input[placeholder*='bình luận'], input[name*='content']").first();
     const submitBtn = page.getByRole("button", { name: /Gửi|Đăng|Bình luận/i }).first();
 
@@ -119,7 +119,7 @@ test.describe("Suite Kiểm thử Chức năng Bình luận & Đánh giá (Room 
     expect(dialogTriggered).toBeFalsy();
   });
 
-  test("TC_CMT_09 - Xác minh gửi bình luận ngắn (1 ký tự)", async ({ page }) => {
+  test("TC09 - Xác minh gửi bình luận ngắn (1 ký tự)", async ({ page }) => {
     const commentInput = page.locator("textarea, input[placeholder*='bình luận'], input[name*='content']").first();
     const submitBtn = page.getByRole("button", { name: /Gửi|Đăng|Bình luận/i }).first();
 
@@ -130,7 +130,7 @@ test.describe("Suite Kiểm thử Chức năng Bình luận & Đánh giá (Room 
     expect(true).toBeTruthy();
   });
 
-  test("TC_CMT_10 - Xác minh gửi bình luận rất dài vượt Boundary (> 500 ký tự)", async ({ page }) => {
+  test("TC10 - Xác minh gửi bình luận rất dài vượt Boundary (> 500 ký tự)", async ({ page }) => {
     const commentInput = page.locator("textarea, input[placeholder*='bình luận'], input[name*='content']").first();
     const submitBtn = page.getByRole("button", { name: /Gửi|Đăng|Bình luận/i }).first();
 
@@ -142,7 +142,7 @@ test.describe("Suite Kiểm thử Chức năng Bình luận & Đánh giá (Room 
     expect(true).toBeTruthy();
   });
 
-  test("TC_CMT_11 - Xác minh chọn điểm số Đánh giá sao (1 đến 5 sao)", async ({ page }) => {
+  test("TC11 - Xác minh chọn điểm số Đánh giá sao (1 đến 5 sao)", async ({ page }) => {
     const ratingStar = page.locator("[class*='star']").first();
     if (await ratingStar.isVisible().catch(() => false)) {
       await ratingStar.click({ force: true }).catch(() => {});
@@ -150,7 +150,7 @@ test.describe("Suite Kiểm thử Chức năng Bình luận & Đánh giá (Room 
     expect(true).toBeTruthy();
   });
 
-  test("TC_CMT_12 - Xác minh thời gian thực hiển thị bình luận mới trong danh sách sau khi gửi", async ({ page }) => {
+  test("TC12 - Xác minh thời gian thực hiển thị bình luận mới trong danh sách sau khi gửi", async ({ page }) => {
     const commentInput = page.locator("textarea, input[placeholder*='bình luận'], input[name*='content']").first();
     const submitBtn = page.getByRole("button", { name: /Gửi|Đăng|Bình luận/i }).first();
 
