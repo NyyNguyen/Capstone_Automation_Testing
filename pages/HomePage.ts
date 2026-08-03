@@ -62,6 +62,13 @@ export class HomePage extends CommonPage {
   readonly iconLeft: Locator;
   readonly iconRight: Locator;
 
+  readonly today: Locator;
+  readonly yesterday: Locator;
+  readonly thisWeek: Locator;
+  readonly lastWeek: Locator;
+  readonly thisMonth: Locator;
+  readonly lastMonth: Locator;
+
   constructor(page: Page) {
     super(page);
 
@@ -159,6 +166,13 @@ export class HomePage extends CommonPage {
       .nth(5);
     this.iconLeft = page.getByRole("button").filter({ hasText: /^$/ }).nth(1);
     this.iconRight = page.getByRole("button").filter({ hasText: /^$/ }).nth(2);
+
+    this.today = page.getByRole('button', { name: 'Today' });
+    this.yesterday = page.getByRole('button', { name: 'Yesterday' });
+    this.thisWeek = page.getByRole('button', { name: 'This Week' });
+    this.lastWeek = page.getByRole('button', { name: 'Last Week' });
+    this.thisMonth = page.getByRole('button', { name: 'This Month' });
+    this.lastMonth = page.getByRole('button', { name: 'Last Month' });
   }
 
   async gotoHomePage(timeOut: number = TimeOutConstants.TIME_OUT_DEFAULT) {
@@ -188,6 +202,10 @@ export class HomePage extends CommonPage {
 
   async clickLocationField() {
     await this.locationField.click();
+  }
+
+  async clickIconSearch(){
+    await this.iconSearch.click();
   }
 
   async clickBody() {
@@ -286,9 +304,28 @@ export class HomePage extends CommonPage {
     await this.iconRight.click();
   }
 
-  async selectDay(day: string) {
-    await this.page
-      .locator(`(//div[@class='rdrMonth'])[1]//span[text()='${day}']`)
-      .click();
+  async clickToday(){
+    await this.today.click();
   }
+
+  async clickYesterday(){
+    await this.yesterday.click();
+  }
+
+  async clickThisWeek(){
+    await this.thisWeek.click();
+  }
+
+  async clickLastWeek(){
+    await this.lastWeek.click();
+  }
+
+  async clickThisMonth(){
+    await this.thisMonth.click();
+  }
+
+  async clickLastMonth(){
+    await this.lastMonth.click();
+  }
+
 }

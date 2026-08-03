@@ -1,5 +1,10 @@
 import { expect, test } from "../fixtures/page-fixtures";
-import { getBookingDate } from "../constants/Date";
+import { getToday } from "../constants/Date";
+import { getYesterday } from "../constants/Date";
+import { getThisWeek } from "../constants/Date";
+import { getLastWeek } from "../constants/Date";
+import { getThisMonth } from "../constants/Date";
+import { getLastMonth } from "../constants/Date";
 
 test("TC_01: Xác minh hiển thị label [Địa điểm]", async ({
   page,
@@ -389,7 +394,7 @@ test("TC_30: Xác minh hiển thị Card [Cần Thơ}", async ({ page, homePage 
   await expect(homePage.CanTho).toBeVisible();
 });
 
-test("TC_31: Xác minh hiển thị Card [Hồ Chí minh]", async ({
+test("TC_31: Xác minh khi nhấn vào Card [Cần Thơ]", async ({
   page,
   homePage,
 }) => {
@@ -588,18 +593,17 @@ test("TC_49: Xác minh khi nhấn vào Iconbutton mũi tên sang phải trong po
   await expect(leftMonth).not.toHaveText(beforeClickIconRight!);
 });
 
-test("TC_50: Xác minh khi chọn ngày check-out trùng ngày check-in", async ({
+test("TC_50: Xác minh khi nhấn vào field [Today]", async ({
   page,
   homePage,
 }) => {
-  const bookingDate = getBookingDate(0);
+  const bookingDate = getToday();
 
   await page.goto("/");
 
   await homePage.clickFieldDate();
 
-  await homePage.selectDay(bookingDate.checkIn);
-  await homePage.selectDay(bookingDate.checkOut);
+  await homePage.clickToday();
 
   const fieldDate = await homePage.fieldDateText.textContent();
 
@@ -607,5 +611,190 @@ test("TC_50: Xác minh khi chọn ngày check-out trùng ngày check-in", async 
     .split("–")
     .map((item) => item.trim());
 
-  expect(displayCheckIn).toBe(displayCheckOut);
+  expect(displayCheckIn).toBe(bookingDate.checkIn);
+  expect(displayCheckOut).toBe(bookingDate.checkOut);
+});
+
+test("TC_51: Xác minh khi nhấn vào field [Yesterday]", async ({
+  page,
+  homePage,
+}) => {
+  const bookingDate = getYesterday();
+
+  await page.goto("/");
+
+  await homePage.clickFieldDate();
+
+  await homePage.clickYesterday();
+
+  const fieldDate = await homePage.fieldDateText.textContent();
+
+  const [displayCheckIn, displayCheckOut] = fieldDate!
+    .split("–")
+    .map((item) => item.trim());
+
+  expect(displayCheckIn).toBe(bookingDate.checkIn);
+  expect(displayCheckOut).toBe(bookingDate.checkOut);
+});
+
+test("TC_52: Xác minh khi nhấn vào field [This Week]", async ({
+  page,
+  homePage,
+}) => {
+  const bookingDate = getThisWeek();
+
+  await page.goto("/");
+
+  await homePage.clickFieldDate();
+
+  await homePage.clickThisWeek();
+
+  const fieldDate = await homePage.fieldDateText.textContent();
+
+  const [displayCheckIn, displayCheckOut] = fieldDate!
+    .split("–")
+    .map((item) => item.trim());
+
+  expect(displayCheckIn).toBe(bookingDate.checkIn);
+  expect(displayCheckOut).toBe(bookingDate.checkOut);
+});
+
+test("TC_53: Xác minh khi nhấn vào field [Last Week]", async ({
+  page,
+  homePage,
+}) => {
+  const bookingDate = getLastWeek();
+
+  await page.goto("/");
+
+  await homePage.clickFieldDate();
+
+  await homePage.clickLastWeek();
+
+  const fieldDate = await homePage.fieldDateText.textContent();
+
+  const [displayCheckIn, displayCheckOut] = fieldDate!
+    .split("–")
+    .map((item) => item.trim());
+
+  expect(displayCheckIn).toBe(bookingDate.checkIn);
+  expect(displayCheckOut).toBe(bookingDate.checkOut);
+});
+
+test("TC_54: Xác minh khi nhấn vào field [This Month]", async ({
+  page,
+  homePage,
+}) => {
+  const bookingDate = getThisMonth();
+
+  await page.goto("/");
+
+  await homePage.clickFieldDate();
+
+  await homePage.clickThisMonth();
+
+  const fieldDate = await homePage.fieldDateText.textContent();
+
+  const [displayCheckIn, displayCheckOut] = fieldDate!
+    .split("–")
+    .map((item) => item.trim());
+
+  expect(displayCheckIn).toBe(bookingDate.checkIn);
+  expect(displayCheckOut).toBe(bookingDate.checkOut);
+});
+
+test("TC_55: Xác minh khi nhấn vào field [Last Month]", async ({
+  page,
+  homePage,
+}) => {
+  const bookingDate = getLastMonth();
+
+  await page.goto("/");
+
+  await homePage.clickFieldDate();
+
+  await homePage.clickLastMonth();
+
+  const fieldDate = await homePage.fieldDateText.textContent();
+
+  const [displayCheckIn, displayCheckOut] = fieldDate!
+    .split("–")
+    .map((item) => item.trim());
+
+  expect(displayCheckIn).toBe(bookingDate.checkIn);
+  expect(displayCheckOut).toBe(bookingDate.checkOut);
+});
+
+test("TC_56: Search khi chỉ chọn Location", async ({ page, homePage }) => {
+  await page.goto("/");
+
+  await homePage.clickLocationField();
+
+  await homePage.clickHoChiMinhCard();
+
+  await homePage.clickIconSearch();
+
+  expect(page).toHaveURL("https://demo5.cybersoft.edu.vn/rooms/ho-chi-minh");
+});
+
+test("TC_57: Search khi không chọn Location", async ({ page, homePage }) => {
+  await page.goto("/");
+
+  await homePage.clickIconSearch();
+
+  expect(page).toHaveURL("https://demo5.cybersoft.edu.vn/rooms");
+});
+
+test("TC_58: Xác minh giá trị trong popup [Thêm khách] vẫn được giữ sau khi đóng và mở lại", async ({
+  page,
+  homePage,
+}) => {
+  await page.goto("/");
+
+  await homePage.clickAddPersonField();
+
+  await homePage.clickPlusButton();
+  await homePage.clickPlusButton();
+
+  await homePage.clickFieldDate();
+
+  await homePage.clickAddPersonField();
+
+  await expect(homePage.numberOfGuests).toHaveText("3");
+});
+
+test("TC_59: Xác minh giá trị trong popup Field Date vẫn được giữ sau khi đóng và mở lại", async ({
+  page,
+  homePage,
+}) => {
+  await page.goto("/");
+
+  await homePage.clickFieldDate();
+
+  await homePage.clickYesterday();
+
+  const beforeClose = await homePage.fieldDateText.textContent();
+
+  await homePage.clickAddPersonField();
+
+  await homePage.clickFieldDate();
+
+  const afterOpen = await homePage.fieldDateText.textContent();
+
+  expect(afterOpen).toBe(beforeClose);
+});
+
+test("TC_60: Xác minh không thể chọn ngày trong quá khứ", async ({
+  page,
+  homePage,
+}) => {
+  await page.goto("/");
+
+  await homePage.clickFieldDate();
+
+  const disabledDay = page.locator("button.rdrDayDisabled").last();
+
+  await expect(disabledDay).toHaveClass(/rdrDayDisabled/);
+
+  await expect(disabledDay).toHaveAttribute("tabindex", "-1");
 });
